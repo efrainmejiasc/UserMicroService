@@ -13,7 +13,7 @@ namespace UsersKeyServices.Models
         public string BalanceDate { get; set; }
         public decimal VirtualBalance { get; set; }
         public string VirtualBalanceDate { get; set; }
-        public string Error { get; set; }
+        public string ErrorCode { get; set; }
         public string ErrorMessage { get; set; }
     }
 }

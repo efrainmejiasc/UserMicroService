@@ -36,7 +36,10 @@ namespace UsersMicroServiceAPI.Controllers
         {
             try
             {
-                var balanceInformation = this._requetUserKey.GetBalanceAndInformationCard(usuarioDTO.KeyUsuario, usuarioDTO.TokenRequest);
+                var balanceInformation = await this._requetUserKey.GetBalanceAndInformationCard(usuarioDTO.KeyUsuario, usuarioDTO.TokenRequest);
+                if (string.IsNullOrEmpty(balanceInformation.ErrorCode))
+                    return BadRequest(EngineService.SetGenericResponse(false, balanceInformation.ErrorCode + " " + balanceInformation.ErrorMessage));
+
                 usuarioDTO.Id = 0;
                 var genericResponse = await this._usuarioService.AddUsuarioAsync(usuarioDTO);
 
@@ -67,6 +70,10 @@ namespace UsersMicroServiceAPI.Controllers
 
             try
             {
+                var balanceInformation = await this._requetUserKey.GetBalanceAndInformationCard(key, "");
+                if(string.IsNullOrEmpty(balanceInformation.ErrorCode))
+                    return BadRequest(EngineService.SetGenericResponse(false, balanceInformation.ErrorCode  +  " " + balanceInformation.ErrorMessage));
+
                 var usuarioDTO = await this._usuarioService.GetUsuarioAsync(key);
 
                 if (usuarioDTO != null)

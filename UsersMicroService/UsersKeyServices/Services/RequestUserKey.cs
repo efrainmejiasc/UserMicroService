@@ -16,36 +16,29 @@ namespace UsersKeyServices.Services
     {
         private readonly RequestUrl _requetUrl;
         public RequestUserKey(RequestUrl requetUrl)
+
         {
             this._requetUrl = requetUrl;
         }
 
         public async Task<ResponseModel> GetBalanceAndInformationCard( string card, string jwtToken)
         {
-            try
+            using (var client = new HttpClient())
             {
-                using (var client = new HttpClient())
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var url = this._requetUrl.BalanceAndInformationUrl() + card;
+                var response = await client.GetAsync(url);
+                if (response.IsSuccessStatusCode && response != null)
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    var url = this._requetUrl.BalanceAndInformationUrl() + card;
-                    var response = await client.GetAsync(url);
-                    if (response.IsSuccessStatusCode && response != null)
-                    {
-                        var strResponse = response.Content.ReadAsStringAsync().Result;
-                        var responseModel = JsonConvert.DeserializeObject<ResponseModel>(strResponse);
-                        return responseModel;
-                    }
-
-
-                    return null;
+                    var strResponse = await response.Content.ReadAsStringAsync();
+                    var responseModel = JsonConvert.DeserializeObject<ResponseModel>(strResponse);
+                    return responseModel;
                 }
             }
-            catch (Exception)
-            {
-                return null;
-            }
+
+            return null;
         }
     }
 }
