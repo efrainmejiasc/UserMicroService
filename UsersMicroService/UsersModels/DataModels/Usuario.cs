@@ -32,8 +32,8 @@ namespace DbUserService.Models
         [Column(Order = 6, TypeName = "VARCHAR(100)")]
         public string KeyUsuario { get; set; }
 
-        [Column(Order = 7, TypeName = "TIMESTAMP")]
-        public DateTime FechaRegistro { get; set; }
+        [Column(Order = 7, TypeName = "timestamp with time zone")]
+        public DateTimeOffset FechaRegistro { get; set; }
 
     }
 }
