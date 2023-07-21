@@ -7,6 +7,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
+using UsersKeyServices.Application;
+using UsersKeyServices.IServices;
+using UsersKeyServices.Services;
 using UsersMicroServiceAPI.SecurityToken;
 using UsersModels.DataModels;
 using UsersModels.IRepositories;
@@ -89,11 +92,15 @@ var mapperConfig = new MapperConfiguration(mc =>
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
+builder.Services.AddScoped<RequestUrl>();
+
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 builder.Services.AddScoped<IUsuarioAccesoService, UsuarioAccesoService>();
 builder.Services.AddScoped<IUsuarioAccesoRepository, UsuarioAccesoRepository>();
+
+builder.Services.AddScoped<IRequestUserKey,RequestUserKey>();
 
 var app = builder.Build();
 

@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\UsersKeyServices\UsersKeyServices.csproj" />
     <ProjectReference Include="..\UsersModels\UsersModels.csproj" />
     <ProjectReference Include="..\UsersServices\UsersServices.csproj" />
   </ItemGroup>

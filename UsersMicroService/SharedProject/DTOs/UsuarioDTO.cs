@@ -21,6 +21,7 @@ namespace SharedProject.DTOs
 
         public string KeyUsuario { get; set; }
 
+        public string TokenRequest { get; set; }
         public DateTimeOffset FechaRegistro { get; set; }
     }
 }

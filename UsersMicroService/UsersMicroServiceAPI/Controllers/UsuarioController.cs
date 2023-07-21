@@ -6,20 +6,22 @@ using System.Net;
 using UsersServices.Application;
 using UsersServices.IServices;
 using Microsoft.AspNetCore.Authorization;
-
+using UsersKeyServices.IServices;
 
 namespace UsersMicroServiceAPI.Controllers
 {
 
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize]
+   // [Authorize]
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
-        public UsuarioController(IUsuarioService usuarioService)
+        private readonly IRequestUserKey _requetUserKey;
+        public UsuarioController(IUsuarioService usuarioService, IRequestUserKey requetUserKey)
         {
-            _usuarioService = usuarioService;
+            this._usuarioService = usuarioService;
+            this._requetUserKey = requetUserKey;
         }
 
         /// <summary>
@@ -34,6 +36,7 @@ namespace UsersMicroServiceAPI.Controllers
         {
             try
             {
+                var balanceInformation = this._requetUserKey.GetBalanceAndInformationCard(usuarioDTO.KeyUsuario, usuarioDTO.TokenRequest);
                 usuarioDTO.Id = 0;
                 var genericResponse = await this._usuarioService.AddUsuarioAsync(usuarioDTO);
 
