@@ -5,11 +5,15 @@ using SharedProject.Models;
 using System.Net;
 using UsersServices.Application;
 using UsersServices.IServices;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace UsersMicroServiceAPI.Controllers
 {
+
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;

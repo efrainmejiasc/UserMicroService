@@ -1,9 +1,10 @@
-﻿using DbUserService.Models;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UsersModels.DataModels;
 
 namespace UsersModels.IRepositories
 {

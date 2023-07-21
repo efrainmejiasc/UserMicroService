@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace DbUserService.Models
+namespace UsersModels.DataModels
 {
     [Table("Usuario")]
     public class Usuario
