@@ -1,0 +1,38 @@
+version: '3.4'
+
+services:
+  traefik:
+    image: traefik
+    command: --web --docker --docker.domain=docker --logLevel=DEBUG
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /develop/traefik/acme:/etc/traefik/acme
+
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234santiago
+      POSTGRES_DB: UsersMsDbDocker
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  myapi:
+    image: myapp:v1.0  # Reemplaza "myapp" con el nombre de tu imagen y "v1.0" con la versión deseada
+    build:
+      context: .
+      dockerfile: MyApi/Dockerfile
+    links:
+      - postgres
+    labels:
+      - "traefik.backend=myapi"
+      - "traefik.frontend.rule=PathPrefixStrip:/"
+
+  pgadmin4:
+    image: dpage/pgadmin4
+    links:
+      - postgres
+
+volumes:
+  postgres-data:
