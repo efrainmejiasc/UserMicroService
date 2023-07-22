@@ -13,7 +13,7 @@ namespace UsersMicroServiceAPI.Controllers
 
     [Route("api/[controller]/[action]")]
     [ApiController]
-   // [Authorize]
+    [Authorize]
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
