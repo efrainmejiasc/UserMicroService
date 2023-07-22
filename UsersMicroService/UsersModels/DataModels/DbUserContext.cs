@@ -19,14 +19,6 @@ namespace UsersModels.DataModels
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Usuario>()
-                .HasIndex(u => u.Documento)
-                .IsUnique();
-
-            modelBuilder.Entity<Usuario>()
-                .HasIndex(u => u.KeyUsuario)
-                .IsUnique();
-
             modelBuilder.Entity<UsuarioAcceso>().HasData(new UsuarioAcceso
             {
                 Id = 1,

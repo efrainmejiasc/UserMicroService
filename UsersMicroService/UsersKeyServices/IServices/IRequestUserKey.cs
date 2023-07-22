@@ -9,6 +9,6 @@ namespace UsersKeyServices.IServices
 {
     public interface IRequestUserKey
     {
-        Task<ResponseModel> GetBalanceAndInformationCard(string card, string jwtToken);
+        Task<BalanceInformacionUsuarioKey> GetBalanceAndInformationCard(string card, string jwtToken);
     }
 }

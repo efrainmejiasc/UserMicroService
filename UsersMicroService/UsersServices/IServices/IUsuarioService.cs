@@ -11,7 +11,7 @@ namespace UsersServices.IServices
     public interface IUsuarioService
     {
         Task<UsuarioDTO> GetUsuarioAsync(string key);
-        Task<GenericResponse> AddUsuarioAsync(UsuarioDTO x);
+        Task<UsuarioDTO> AddUsuarioAsync(UsuarioDTO model);
         Task<GenericResponse> DeleteUsuarioAsync(int userId);
         Task<GenericResponse> UpdateUsuarioAsync(UsuarioDTO x);
     }

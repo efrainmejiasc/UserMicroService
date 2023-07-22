@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UsersKeyServices.Models
 {
-    public class ResponseModel
+    public class BalanceInformacionUsuarioKey
     {
         public string Card { get; set; }
         public decimal Balance { get; set; }

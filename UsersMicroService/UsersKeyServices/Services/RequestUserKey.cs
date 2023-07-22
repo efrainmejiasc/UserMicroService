@@ -21,7 +21,7 @@ namespace UsersKeyServices.Services
             this._requetUrl = requetUrl;
         }
 
-        public async Task<ResponseModel> GetBalanceAndInformationCard( string card, string jwtToken)
+        public async Task<BalanceInformacionUsuarioKey> GetBalanceAndInformationCard( string card, string jwtToken)
         {
             using (var client = new HttpClient())
             {
@@ -33,7 +33,7 @@ namespace UsersKeyServices.Services
                 if (response.IsSuccessStatusCode && response != null)
                 {
                     var strResponse = await response.Content.ReadAsStringAsync();
-                    var responseModel = JsonConvert.DeserializeObject<ResponseModel>(strResponse);
+                    var responseModel = JsonConvert.DeserializeObject<BalanceInformacionUsuarioKey>(strResponse);
                     return responseModel;
                 }
             }

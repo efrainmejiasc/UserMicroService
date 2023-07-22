@@ -29,7 +29,7 @@ namespace UsersMicroServiceAPI.Controllers
         /// </summary>
         /// <returns>Estado de la solicitud</returns>
         [HttpPost(Name = "PostUsuario")]
-        [ProducesResponseType(statusCode: (int)HttpStatusCode.OK, Type = typeof(GenericResponse))]
+        [ProducesResponseType(statusCode: (int)HttpStatusCode.OK, Type = typeof(UsuarioInformacionDTO))]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.BadRequest, Type = typeof(GenericResponse))]
 
         public async Task<IActionResult> PostUsuarioAsync([FromBody] UsuarioDTO usuarioDTO)
@@ -37,16 +37,16 @@ namespace UsersMicroServiceAPI.Controllers
             try
             {
                 var balanceInformation = await this._requetUserKey.GetBalanceAndInformationCard(usuarioDTO.KeyUsuario, usuarioDTO.TokenRequest);
-                if (string.IsNullOrEmpty(balanceInformation.ErrorCode))
+                if (balanceInformation == null || !string.IsNullOrEmpty(balanceInformation.ErrorCode))
                     return BadRequest(EngineService.SetGenericResponse(false, balanceInformation.ErrorCode + " " + balanceInformation.ErrorMessage));
 
                 usuarioDTO.Id = 0;
-                var genericResponse = await this._usuarioService.AddUsuarioAsync(usuarioDTO);
+                usuarioDTO = await this._usuarioService.AddUsuarioAsync(usuarioDTO);
 
-                if (genericResponse.Ok)
-                    return Ok(genericResponse);
+                if (usuarioDTO.Id > 0)
+                    return Ok(EngineService.SetUsuarioInformacionDTO(usuarioDTO,balanceInformation));
                 else
-                    return BadRequest(genericResponse);
+                    return BadRequest(EngineService.SetGenericResponse(false, "No se registro la información"));
             }
             catch (Exception ex)
             {
@@ -59,25 +59,25 @@ namespace UsersMicroServiceAPI.Controllers
         ///Obtiene datos del usuario por llave
         ///</summary>
         ///<returns>Datos del usuario</returns>
-        [HttpGet("{key}", Name = "GetUsuario")]
-        [ProducesResponseType(statusCode: (int)HttpStatusCode.OK, Type = typeof(UsuarioDTO))]
+        [HttpGet("{key}/{requestToken}", Name = "GetUsuario")]
+        [ProducesResponseType(statusCode: (int)HttpStatusCode.OK, Type = typeof(UsuarioInformacionDTO))]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.BadRequest, Type = typeof(GenericResponse))]
 
-        public async Task<IActionResult> GetUsuarioAsync(string key)
+        public async Task<IActionResult> GetUsuarioAsync(string key, string requestToken)
         {
-            if(string.IsNullOrEmpty(key))
-                return BadRequest(EngineService.SetGenericResponse(false, "La llave no puede ser vacia"));
+            if(string.IsNullOrEmpty(key) || string.IsNullOrEmpty(requestToken))
+                return BadRequest(EngineService.SetGenericResponse(false, "Llave y token son requeridos"));
 
             try
             {
-                var balanceInformation = await this._requetUserKey.GetBalanceAndInformationCard(key, "");
-                if(string.IsNullOrEmpty(balanceInformation.ErrorCode))
+                var balanceInformation = await this._requetUserKey.GetBalanceAndInformationCard(key, requestToken);
+                if (balanceInformation == null || !string.IsNullOrEmpty(balanceInformation.ErrorCode))
                     return BadRequest(EngineService.SetGenericResponse(false, balanceInformation.ErrorCode  +  " " + balanceInformation.ErrorMessage));
 
                 var usuarioDTO = await this._usuarioService.GetUsuarioAsync(key);
 
                 if (usuarioDTO != null)
-                    return Ok(usuarioDTO);
+                    return Ok(EngineService.SetUsuarioInformacionDTO(usuarioDTO, balanceInformation));
                 else
                     return BadRequest(EngineService.SetGenericResponse(false, "No se encontró información"));
             }

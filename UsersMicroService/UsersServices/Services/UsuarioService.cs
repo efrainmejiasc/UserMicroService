@@ -26,20 +26,20 @@ namespace UsersServices.Services
             this.mapper = _mapper;
         }
 
-        public async Task<GenericResponse> AddUsuarioAsync(UsuarioDTO model)
+        public async Task<UsuarioDTO> AddUsuarioAsync(UsuarioDTO model)
         {
             var usuario = this.mapper.Map<Usuario>(model);
 
             usuario = await this.usuarioRepository.AddUsuarioAsync(usuario);
 
             if (usuario.Id > 0)
-                return EngineService.SetGenericResponse(true, "La información ha sido registrada");
+                model.Id = usuario.Id;
+            
 
-            else
-                return EngineService.SetGenericResponse(false, "No se pudo registrar la información");
+            return model;
         }
 
-        public async Task<UsuarioDTO> GetUsuarioAsync(string key)
+        public async Task<UsuarioDTO> GetUsuarioAsync(string key )
         {
             var usuario = await this.usuarioRepository.GetUsuarioAsync(key);
             var userData = mapper.Map<Usuario,UsuarioDTO>(usuario);

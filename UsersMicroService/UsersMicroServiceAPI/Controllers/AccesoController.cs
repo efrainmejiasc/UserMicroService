@@ -22,6 +22,11 @@ namespace UsersMicroServiceAPI.Controllers
             this._jwtBearerTokenSettings = jwtTokenOptions.Value;
         }
 
+        /// <summary>
+        /// username = admin ;  password = admin
+        /// </summary>
+        /// <returns>Estado de la solicitud</returns>
+
         [HttpPost]
         [Route("Login")]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.OK, Type = typeof(AccessToken))]
